@@ -18,16 +18,16 @@ public class MqManager {
 	private List<IpAddress> brokers_list;
 	private IpAddress leader_broker;
 	
-	//<Topic,Consumer_Ip> 保存Topic的目标Consumer
-	private HashMap<String,IpAddress> consumer_list;
-	private ProducerListener listener;
+	//<Topic,Consumer_Ip> 保存Topic的目标Consumer:Push模式参数
+	private HashMap<String,IpAddress> target_consumers;
+	private MqManagerListener listener;
 	
 	public MqManager(IpAddress manager_ip) {
 		this.ip = manager_ip;
 		this.brokers_list = new ArrayList<IpAddress>();
-		this.consumer_list = new HashMap<String,IpAddress>();
+		this.target_consumers = new HashMap<String,IpAddress>();
 		
-		listener = new ProducerListener(this);
+		listener = new MqManagerListener(this);
 		listener.start();
 	}
 	
@@ -36,15 +36,17 @@ public class MqManager {
 		return null;
 	}
 	
-	//TODO:MQ的写入操作，把消息更新到LeaderBroker中
+	//TODO:RPC调用leader Broker 把消息更新到LeaderBroker中
 	public String updateMsgToBroker(Message msg) {
 		return null;
 	}
 	
-	//TODO:更新Consumer list
-	public String addConsumer(String topic,IpAddress consumer_ip) {
+	//TODO:RPC调用leader Broker 把Consumer列表更新到LeaderBroker中
+	public String updateConsumerToBroker(HashMap<String,IpAddress> target_consumers) {
 		return null;
 	}
+	
+	//TODO:Push模式:接受Consumer的请求并注册在targer_consumer中
 		
 	
 	//测试从Producer收消息
@@ -69,12 +71,7 @@ public class MqManager {
 	}
 
 
-	public HashMap<String, IpAddress> getConsumer_list() {
-		return consumer_list;
-	}
-
-
-	public ProducerListener getListener() {
+	public MqManagerListener getListener() {
 		return listener;
 	}
 
