@@ -33,9 +33,17 @@ public class Producer {
 	}
 	
 	public static void main(String[] args) {
-		Message msg = new Message("test","content1",2);
+		Message msg = new Message("test","content2",2);
+		Message msg1 = new Message(new IpAddress("localhost",85),"topic1",1);
+		
 		IpAddress mq_manager = new IpAddress("localhost",83);
-		String resp = Send(msg,mq_manager);
+		Send(msg,mq_manager);
+		try {
+			Thread.sleep(10);
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
+		Send(msg1,mq_manager);
 	}
 
 	

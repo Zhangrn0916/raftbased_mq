@@ -36,17 +36,19 @@ public class MqManagerListener extends Thread{
 				SocketChannel sChannel = ssChannel.accept();
 				ois = new ObjectInputStream(sChannel.socket().getInputStream());
 				Message msg = (Message)ois.readObject();
-				ois.close();
-				System.out.println("Received Message: " + msg.toString());
 				
-//				//Response to Producer
-//				ObjectOutputStream oos = new ObjectOutputStream(sChannel.socket().getOutputStream());
-//				Message resp = new Message("resp",msg.getTopic()+":"+msg.getNum(),msg.getNum()+1);
-//				oos.writeObject(resp);
-//	            oos.close();
-	
-				//把接收到的消息更新到LeaderBroker中
-				local.updateMsgToBroker(msg);
+				
+				//普通消息:
+				if(msg.getType() == 0) {
+					local.updateMsgToBroker(msg);
+					System.out.println("Received Message: " + msg.toString());
+				}else if(msg.getType() == 1) {   //Push模式:接收到Consumer的注册消息
+					local.addConsumer(msg.getTopic(), msg.getConsumer());
+					local.updateConsumerToBroker();
+					System.out.println("Received Message: " + msg.toString());
+				}
+				ois.close();
+				
 				
 				Thread.sleep(50);
 			} catch (ClassNotFoundException e) {

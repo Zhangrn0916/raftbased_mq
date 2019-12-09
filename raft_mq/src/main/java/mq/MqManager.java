@@ -19,13 +19,13 @@ public class MqManager {
 	private IpAddress leader_broker;
 	
 	//<Topic,Consumer_Ip> 保存Topic的目标Consumer:Push模式参数
-	private HashMap<String,IpAddress> target_consumers;
+	private HashMap<String, List<IpAddress>> target_consumers;
 	private MqManagerListener listener;
 	
 	public MqManager(IpAddress manager_ip) {
 		this.ip = manager_ip;
 		this.brokers_list = new ArrayList<IpAddress>();
-		this.target_consumers = new HashMap<String,IpAddress>();
+		this.target_consumers = new HashMap<String,List<IpAddress>>();
 		
 		listener = new MqManagerListener(this);
 		listener.start();
@@ -42,11 +42,19 @@ public class MqManager {
 	}
 	
 	//TODO:RPC调用leader Broker 把Consumer列表更新到LeaderBroker中
-	public String updateConsumerToBroker(HashMap<String,IpAddress> target_consumers) {
+	public String updateConsumerToBroker() {
 		return null;
 	}
 	
-	//TODO:Push模式:接受Consumer的请求并注册在targer_consumer中
+	//添加新的target_consumer
+	public void addConsumer(String topic,IpAddress consumer) {
+		if(this.target_consumers.containsKey(topic)) {
+			this.target_consumers.get(topic).add(consumer);
+		}else {
+			this.target_consumers.put(topic, new ArrayList<IpAddress>());
+			this.target_consumers.get(topic).add(consumer);
+		}
+	}
 		
 	
 	//测试从Producer收消息
