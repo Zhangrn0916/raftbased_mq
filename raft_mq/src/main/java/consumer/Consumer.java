@@ -6,20 +6,16 @@ import utils.IpAddress;
 import utils.Message;
 
 public class Consumer {
-	 List<IpAddress> getBrokersList;
-	 IpAddress consumer_ip;
+	
+	 IpAddress ip;
+	 List<IpAddress> broker_list;
 	
 	
-	public List<IpAddress> getBrokersList(IpAddress mq_manager){
-		
-
+	public List<IpAddress> getBrokerList(IpAddress mq_manager){
 		return null;
 	}
 	
-	public static Message GetMessageFromBroker(String topic, IpAddress brokers) {
-		
-		
-		
+	public static Message GetMessageFromBroker(String topic, IpAddress broker) {
 		return null;
 	}
 	

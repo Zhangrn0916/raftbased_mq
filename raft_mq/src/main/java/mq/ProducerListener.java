@@ -2,7 +2,9 @@ package mq;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.net.InetSocketAddress;
+import java.nio.ByteBuffer;
 import java.nio.channels.ServerSocketChannel;
 import java.nio.channels.SocketChannel;
 
@@ -18,9 +20,7 @@ public class ProducerListener extends Thread{
 		try {
 			ssChannel = ServerSocketChannel.open();
 		    ssChannel.configureBlocking(true);
-		    ssChannel.socket()
-		    		 .bind(new InetSocketAddress(manager.getIp()
-		    											.getPort()));
+		    ssChannel.socket().bind(new InetSocketAddress(manager.getIp().getPort()));
 		} catch (IOException e1) {
 			e1.printStackTrace();
 		}
@@ -38,7 +38,13 @@ public class ProducerListener extends Thread{
 				ois.close();
 				System.out.println("Received Message: " + msg.toString());
 				
-				//更新Msg到Broker中
+//				//Response to Producer
+//				ObjectOutputStream oos = new ObjectOutputStream(sChannel.socket().getOutputStream());
+//				Message resp = new Message("resp",msg.getTopic()+":"+msg.getNum(),msg.getNum()+1);
+//				oos.writeObject(resp);
+//	            oos.close();
+	
+				//把接收到的消息更新到LeaderBroker中
 				local.updateMsgToBroker(msg);
 				
 				Thread.sleep(50);

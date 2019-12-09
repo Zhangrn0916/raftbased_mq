@@ -31,7 +31,7 @@ public class MqManager {
 		listener.start();
 	}
 	
-	
+	//TODO:添加一个Broker并通知其他Broker有新Broker加入
 	public String addBroker(IpAddress broker_ip) {
 		return null;
 	}
@@ -40,8 +40,9 @@ public class MqManager {
 	public String updateMsgToBroker(Message msg) {
 		return null;
 	}
-		
-	public String addNewConsumer(String consumer_key,IpAddress consumer_ip) {
+	
+	//TODO:更新Consumer list
+	public String addConsumer(String topic,IpAddress consumer_ip) {
 		return null;
 	}
 		

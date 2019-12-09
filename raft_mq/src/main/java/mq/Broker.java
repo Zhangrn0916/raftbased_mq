@@ -12,7 +12,6 @@ public class Broker {
 	//Listening From MqManager 
 	
 	public String init(){
-		//多线程监听当前端口
 		return null;	
 	}
 
